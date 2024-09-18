@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Player from "./components/Player";
+import GameBoard from "./components/GameBoard";
 
 class PlayerModel {
   constructor(name, symbol, active = false) {
@@ -22,6 +23,10 @@ function getPlayerIndexBy(symbol, players) {
   return players.map(({ symbol }) => symbol).indexOf(symbol);
 }
 
+function getActivePlayer(players) {
+  return players.filter((player) => player.isTurnActive)[0];
+}
+
 function App() {
   const [players, updatePlayers] = useState(defaultPlayers);
 
@@ -36,6 +41,15 @@ function App() {
     });
   }
 
+  function didEndTurnAction() {
+    updatePlayers(() => {
+      const playersState = [...players];
+      players.forEach((player) => {
+        player.toggleTurn();
+      });
+      return playersState;
+    });
+  }
   return (
     <div id="game-container">
       <ul id="players" className="highlight-player">
@@ -48,7 +62,10 @@ function App() {
         ))}
       </ul>
 
-      <div id="game-board"></div>
+      <GameBoard
+        activePlayer={getActivePlayer(players)}
+        didEndTurnCallback={didEndTurnAction}
+      />
     </div>
   );
 }
