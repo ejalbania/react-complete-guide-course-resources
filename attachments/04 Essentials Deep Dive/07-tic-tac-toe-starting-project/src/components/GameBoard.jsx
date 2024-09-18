@@ -15,7 +15,7 @@ export default function GameBoard({ activePlayer, didEndTurnCallback }) {
       boardState[row][col] = activePlayer.symbol;
       return boardState;
     });
-    didEndTurnCallback();
+    didEndTurnCallback(row, col);
   };
   return (
     <div id="game-board">

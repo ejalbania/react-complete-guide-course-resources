@@ -245,14 +245,18 @@ ol {
   color: #3f3b00;
   list-style: none;
   margin: 2rem auto;
-  padding: 0;
+  padding: 1rem;
   text-align: center;
+  background: #fff6;
+  backdrop-filter: blur(2px);
+  box-shadow: 5px 5px 5px #0005;
+  border-radius: 5px;
 }
 
 #log li {
   border-radius: 4px;
-  animation: slide-in-from-left 1s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
   margin: 0.75rem;
+  animation: slide-in-from-left 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 #log li.highlighted {

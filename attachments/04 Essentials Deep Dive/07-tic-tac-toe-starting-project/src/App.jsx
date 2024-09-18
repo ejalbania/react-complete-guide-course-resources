@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
+import TurnLogger from "./components/TurnLogger";
 
 class PlayerModel {
   constructor(name, symbol, active = false) {
@@ -27,8 +28,13 @@ function getActivePlayer(players) {
   return players.filter((player) => player.isTurnActive)[0];
 }
 
+function queueNextPlayer(players) {
+  return { player: getActivePlayer(players), square: null };
+}
+
 function App() {
   const [players, updatePlayers] = useState(defaultPlayers);
+  const [turnLogs, updateTurnLogs] = useState([queueNextPlayer(players)]);
 
   function updatePlayer(symbol, newName) {
     updatePlayers(() => {
@@ -41,32 +47,40 @@ function App() {
     });
   }
 
-  function didEndTurnAction() {
+  function didEndTurnAction(row, col) {
+    const turnLogsState = [...turnLogs];
+
+    turnLogsState[0].square = { row: row, col, col };
+
     updatePlayers(() => {
       const playersState = [...players];
-      players.forEach((player) => {
+      playersState.forEach((player) => {
         player.toggleTurn();
       });
+
+      updateTurnLogs([queueNextPlayer(playersState), ...turnLogsState]);
       return playersState;
     });
   }
   return (
-    <div id="game-container">
-      <ul id="players" className="highlight-player">
-        {players.map((player, index) => (
-          <Player
-            key={index}
-            data={player}
-            savePlayerNameCallback={updatePlayer}
-          />
-        ))}
-      </ul>
-
-      <GameBoard
-        activePlayer={getActivePlayer(players)}
-        didEndTurnCallback={didEndTurnAction}
-      />
-    </div>
+    <>
+      <div id="game-container">
+        <ul id="players" className="highlight-player">
+          {players.map((player, index) => (
+            <Player
+              key={index}
+              data={player}
+              savePlayerNameCallback={updatePlayer}
+            />
+          ))}
+        </ul>
+        <GameBoard
+          activePlayer={getActivePlayer(players)}
+          didEndTurnCallback={didEndTurnAction}
+        />
+      </div>
+      <TurnLogger logs={turnLogs} />
+    </>
   );
 }
 
