@@ -10,7 +10,7 @@ export default function GameBoard({ board, didEndTurnCallback }) {
                   <button
                     disabled={col !== undefined}
                     onClick={() => {
-                      didEndTurnCallback(row, col);
+                      didEndTurnCallback(rowIndex, colIndex);
                     }}
                   >
                     {col}
