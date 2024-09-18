@@ -1,25 +1,7 @@
-import { useState } from "react";
-
-const defaultBoardState = [
-  [undefined, undefined, undefined],
-  [undefined, undefined, undefined],
-  [undefined, undefined, undefined],
-];
-
-export default function GameBoard({ activePlayer, didEndTurnCallback }) {
-  const [gameBoard, updateBoard] = useState(defaultBoardState);
-
-  const onClickAction = (row, col) => {
-    updateBoard(() => {
-      const boardState = [...gameBoard];
-      boardState[row][col] = activePlayer.symbol;
-      return boardState;
-    });
-    didEndTurnCallback(row, col);
-  };
+export default function GameBoard({ board, didEndTurnCallback }) {
   return (
     <div id="game-board">
-      {gameBoard.map((row, rowIndex) => {
+      {board.map((row, rowIndex) => {
         return (
           <ol key={rowIndex}>
             {row.map((col, colIndex) => {
@@ -28,7 +10,7 @@ export default function GameBoard({ activePlayer, didEndTurnCallback }) {
                   <button
                     disabled={col !== undefined}
                     onClick={() => {
-                      onClickAction(rowIndex, colIndex);
+                      didEndTurnCallback(row, col);
                     }}
                   >
                     {col}

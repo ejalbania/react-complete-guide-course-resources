@@ -20,6 +20,12 @@ const defaultPlayers = [
   new PlayerModel("Player 2", "O"),
 ];
 
+const defaultBoardState = [
+  [undefined, undefined, undefined],
+  [undefined, undefined, undefined],
+  [undefined, undefined, undefined],
+];
+
 function getPlayerIndexBy(symbol, players) {
   return players.map(({ symbol }) => symbol).indexOf(symbol);
 }
@@ -30,6 +36,19 @@ function getActivePlayer(players) {
 
 function queueNextPlayer(players) {
   return { player: getActivePlayer(players), square: null };
+}
+
+function getBoardStatus(turnLogs) {
+  let board = defaultBoardState;
+
+  turnLogs.forEach(({ player, square }) => {
+    if (square !== null) {
+      const { row, col } = square;
+      board[row][col] = player.symbol;
+    }
+  });
+
+  return board;
 }
 
 function App() {
@@ -75,6 +94,7 @@ function App() {
           ))}
         </ul>
         <GameBoard
+          board={getBoardStatus(turnLogs)}
           activePlayer={getActivePlayer(players)}
           didEndTurnCallback={didEndTurnAction}
         />
