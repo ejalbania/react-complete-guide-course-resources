@@ -1,4 +1,4 @@
-export default function GameBoard({ board, didEndTurnCallback }) {
+export default function GameBoard({ board, isGameOver, didEndTurnCallback }) {
   return (
     <div id="game-board">
       {board.map((row, rowIndex) => {
@@ -8,7 +8,7 @@ export default function GameBoard({ board, didEndTurnCallback }) {
               return (
                 <li key={`${rowIndex}${colIndex}`}>
                   <button
-                    disabled={col !== undefined}
+                    disabled={col !== undefined || isGameOver}
                     onClick={() => {
                       didEndTurnCallback(rowIndex, colIndex);
                     }}

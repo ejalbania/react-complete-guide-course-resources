@@ -4,10 +4,13 @@ export default function TurnLogger({ logs }) {
       {logs.map(({ player, square }, index) => {
         let logMessage = `Waiting for ${player.name}'s turn...`;
 
-        if (square !== null) {
+        if (index === 0 && player.isWinner) {
+          logMessage = `Congratulations ${player.name}! You won.`;
+        } else if (square !== null) {
           const { row, col } = square;
           logMessage = `${player.name} selected box at [${row},${col}]`;
         }
+
         return <li key={index}>{logMessage}</li>;
       })}
     </ol>
