@@ -13,7 +13,7 @@ export default function InputSection({ keyGrouping, data, onChangeCallback }) {
                   key={key}
                   input={input}
                   onChangeCallback={(event) => {
-                    onChangeCallback(key, event.target.value);
+                    onChangeCallback(key, Number(event.target.value));
                   }}
                 />
               ))}
